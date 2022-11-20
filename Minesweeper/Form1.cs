@@ -43,11 +43,10 @@ namespace Minesweeper
                 Button gridNode = new Button();
                 gridNode.Click += this.Button_Clicked;
                 gridNode.Size = new System.Drawing.Size(nodeDimensions, nodeDimensions);
-                gridNode.Tag = mineIndexes.Contains(i);
+                gridNode.Tag = i;
                 gridNode.Name = "Node_" + i.ToString();
-                gridNode.Text = solver.GetMineValue(i);
+                gridNode.Text = solver.freqMap[i / gridDimension, i % gridDimension].ToString();
                 gridNode.UseVisualStyleBackColor = true;
-                internalMap[i / gridDimension, i % gridDimension] = gridNode.Tag.ToString();
                 Grid.Controls.Add(gridNode);
             }
             gameInitialised = true;
@@ -60,7 +59,7 @@ namespace Minesweeper
             {
                 int n = random.Next(0, gridSize - 1);
                 mineIndexes.Add(n);
-                internalMap[n / gridDimension, n % gridDimension] = "True";
+                internalMap[n / gridDimension, n % gridDimension] = "M";
             }
         }
 
@@ -91,6 +90,7 @@ namespace Minesweeper
             if (btn != null)
             {
                 Debug.WriteLine(btn);
+                btn.Text = "";
             }
         }
     }

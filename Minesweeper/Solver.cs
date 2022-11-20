@@ -10,35 +10,29 @@ namespace Minesweeper
     internal class Solver
     {
         private string[,] grid;
-        private int[,] freqMap;
+        public int[,] freqMap;
         private int gridDimension;
+        private int totalCells;
 
         public Solver(string[,] grid)
         {
             this.grid = grid;
             gridDimension = grid.GetLength(0);
+            totalCells = (int)Math.Pow(gridDimension, 2);
             freqMap = new int[gridDimension, gridDimension];
             ConvertToFreqMap();
-            PrintGrid(freqMap);
+            PrintGrid(grid);
         }
 
         private void ConvertToFreqMap()
         {
-            for (int y = 0; y < grid.GetLength(0); y++)
+            for (int n = 0; n < totalCells; n++)
             {   
-               for (int x = 0; x < grid.GetLength(0); x++)
-               {
-                    freqMap[x, y] = GetSelfValue(grid, x, y);
-               }
+                int y = n / gridDimension;
+                int x = n % gridDimension;
+                freqMap[x, y] = GetSelfValue(grid, x, y);
             }
 
-        }
-
-        public string GetMineValue(int i)
-        {
-            int x_1 = i / gridDimension;
-            int y_1 = i % gridDimension;
-            return freqMap[x_1, y_1].ToString();
         }
 
         public static int GetSelfValue(string[,] arr, int i, int j)
@@ -46,27 +40,31 @@ namespace Minesweeper
             int n = arr.Length;
             int m = arr.GetLength(0);
             List<string> v = new List<string>();
-            for (int x = -1; x < 6; x++)
+            for (int y = -1; y < 2; y++)
             {
-                try
+                for (int x = -1; x < 2; x++)
                 {
-                    v.Add(arr[i + x / 3, j + x % 3]);
-                } catch (IndexOutOfRangeException)
-                {
-                    continue;
+                    try
+                    {
+                        v.Add(arr[(i + y), (j + x)]);
+                    }
+                    catch (IndexOutOfRangeException)
+                    {
+                        continue;
+                    }
                 }
             }
-            int count = v.Count(x => x == "True");
-            return (arr[i, j] == "True") ? count += 1: count;
+            int count = v.Count(x => x == "M");
+            return (arr[i, j] == "M") ? -1: count;
         }
 
-        private static void PrintGrid(int[,] grid)    
+        private static void PrintGrid(string[,] grid)    
         {
             for (int i = 0; i < grid.GetLength(0); i++)
             {
                 for (int j = 0; j < grid.GetLength(1); j++)
                 {
-                    Console.Write("|" + grid[i, j].ToString());
+                    Console.Write("|" + grid[i, j]);
                 }
                 Console.Write(Environment.NewLine + Environment.NewLine);
             }

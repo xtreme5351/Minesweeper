@@ -40,7 +40,7 @@
             this.AutoStart.Name = "AutoStart";
             this.AutoStart.Size = new System.Drawing.Size(114, 23);
             this.AutoStart.TabIndex = 2;
-            this.AutoStart.Text = "Start (auto)";
+            this.AutoStart.Text = "Generate";
             this.AutoStart.UseVisualStyleBackColor = true;
             this.AutoStart.Click += new System.EventHandler(this.AutoStart_Click);
             // 
